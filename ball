@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            width: 100%;
+            height: 100%;
+        }
+        div{
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: red;
+            position: absolute;
+            top:0;
+            left:0;
+        }
+        .box{
+            width: 200px;
+            height: 20px;
+            border-radius: 0%;
+            background-color: black;
+            position: absolute;
+            top:730px;
+            left: 700px;
+        }
+    </style>
+</head>
+<body>
+<div id="box" class="box"></div>
+</body>
+<script>
+
+    var oBox = document.getElementById('box');
+
+    function Qiu(left,top,speed,color,deltaX,deltaY) {
+        this.deltaX = deltaX || 5;
+        this.deltaY = deltaY || 5;
+        this.top = top;
+        this.left = left;
+        this.dom = null;
+        this.timer = 0;
+        this.speed = speed;
+        this.backgroundColor = color;
+
+        this.init();
+        this.move();
+    }
+    Qiu.prototype.init=function () {
+        this.dom = document.createElement('div');
+        document.body.appendChild(this.dom);
+    }
+    //小球的渲染
+    Qiu.prototype.render=function () {
+        this.dom.style.left = this.left+'px';
+        this.dom.style.top = this.top+'px';
+        this.dom.style.backgroundColor = this.backgroundColor;
+
+    }
+    Qiu.prototype.move=function () {
+        var self = this;
+        var width = document.documentElement.clientWidth || document.body.clientWidth;
+        var height = document.documentElement.clientHeight || document.body.clientHeight;
+        this.timer = setInterval(function () {
+            self.top += self.deltaY;
+            self.left += self.deltaX;
+
+            if(self.top<=0 || self.top>=height-20){
+                self.deltaY = -self.deltaY;
+            }
+
+            if(self.left<=0 || self.left>=width-20){
+                self.deltaX = -self.deltaX;
+            }
+            self.render();
+
+        },this.speed)
+
+    }
+    Qiu.prototype.die = function () {
+        clearInterval(timer);
+        document.body.removeChild(this.dom);
+    }
+    new Qiu(100,100,30,'green',20,20);
+    new Qiu(200,200,20,'pink',10,10);
+
+
+
+       var newx = event.clientX - oBox.offsetLeft;
+
+       document.onmousemove = function (event) {
+           event = event||window.event;
+
+           var x = event.clientX - newx;
+           var width = document.documentElement.clientWidth || document.body.clientWidth;
+           if(x<=0) x=0;
+           if(x>=width-200) x = width-200;
+           oBox.style.left = x +'px';
+
+
+       }
+
+</script>
+</html>
